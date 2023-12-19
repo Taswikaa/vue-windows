@@ -1,0 +1,99 @@
+<template>
+  <div class="widget">
+    <DataForm />
+    <CreateForm />
+  </div>
+</template>
+
+<script>
+import DataForm from './DataForm.vue';
+import CreateForm from './CreateForm.vue';
+
+export default {
+  name: 'MainComponent',
+  components: {
+    DataForm,
+    CreateForm
+  }
+}
+</script>
+
+<style>
+  .widget {
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+  }
+
+  .text-input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid #463e40;
+    color: #463e40;
+    font-size: 14px;
+    padding: 0 7px 7px 0;
+    width: 282px;
+  }
+
+  .text-input:focus {
+    outline: none;
+    border-bottom: 1px solid #9e9eed;
+  }
+
+  .text-input::placeholder {
+    color: #817f7f;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    row-gap: 25px;
+  }
+
+  .select {
+    appearance: none;
+    -ms-progress-appearance: none;
+    border: none;
+    background-color: transparent;
+    color: #463e40;
+    outline: none;
+    border-radius: 3px;
+    padding: 7px 7px 7px 0;
+    width: 282px;
+    cursor: pointer;
+  }
+
+  .select:focus {
+    outline: none;
+    box-shadow: 0 0 0 1px #9e9eed;
+  }
+
+  .select-wrapper {
+    border-bottom: 1px solid #463e40;
+    position: relative;
+  }
+
+  .select-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 10%;
+    right: 5px;
+    display: block;
+    width: 9px;
+    height: 9px;
+    border: 1px solid #333;
+    transform: rotate(45deg);
+    border-top: none;
+    border-left: none;
+    pointer-events: none;
+  }
+
+  @media screen and (min-width: 1024px) {
+    .widget {
+      flex-direction: row;
+      row-gap: 0;
+      column-gap: 100px;
+      font-size: 24px;
+    }
+  }
+</style>
