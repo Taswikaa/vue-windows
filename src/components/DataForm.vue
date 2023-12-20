@@ -1,15 +1,15 @@
 <template>
-  <form class="form" action="">
+  <form class="form" @submit.prevent="onSubmit">
     <h2 class="form__heading">Создание</h2>
-    <div class="select-wrapper">
+    <div class="select-wrapper" v-if="managersList.length">
       <select class="select" v-model="data.user">
         <option selected disabled>
           Выберете менеджера
         </option>
         <option
-          v-for="(manager, i) in managersList"
+          v-for="manager in managersList"
           :value="manager.value"
-          :key="i"
+          :key="manager.id"
         >
           {{ manager.label }}
         </option>
@@ -27,7 +27,7 @@
       placeholder="Ссылка в Jira"
       v-model.trim="data.link"
     >
-    <div class="select-wrapper">
+    <div class="select-wrapper" v-if="domainsList.length">
       <select class="select" v-model="data.domain">
         <option selected disabled>
           Укажите домен
@@ -41,10 +41,12 @@
         </option>
       </select>
     </div>
+    <button class="form__button">Создать</button>
   </form>
 </template>
 
 <script>
+import api from '../utils/api.js';
 
 export default {
   name: 'DataForm',
@@ -59,39 +61,42 @@ export default {
         domain: 'Укажите домен'
       },
       managersList: [
-        {
-          label: 'Иванов',
-          value: 'Иванов'
-        },
-        {
-          label: 'Петров',
-          value: 'Петров'
-        },
-        {
-          label: 'Юров',
-          value: 'Юров'
-        },
+
       ],
       domainsList: [
-        {
-          label: 'Бэк-офис',
-          value: 'Бэк-офис'
-        },
-        {
-          label: 'Техплатформа,',
-          value: 'Техплатформа,'
-        },
-        {
-          label: 'Офис больших данных',
-          value: 'Офис больших данных 1'
-        },
-        {
-          label: 'Цифровой опыт поставщика',
-          value: 'Цифровой опыт поставщика'
-        },
+
       ],
     }
-  }
+  },
+  methods: {
+    onSubmit() {
+      console.log(this.data);
+      // Запрос на первый эндпоинт
+      // api.sendToFirstApi(this.data);
+    }
+  },
+  mounted() {
+    api.getData()
+    .then(data => {
+      const managers = data.data.managers;
+      const domains = data.data.domains;
+
+      managers && managers.forEach(manager => {
+        this.managersList.push({
+          label: manager.name,
+          value: manager.name,
+          id: manager.id
+        })
+      })
+
+      domains && domains.forEach(domen => {
+        this.domainsList.push({
+          label: domen,
+          value: domen,
+        })
+      })
+    })
+  },
 }
 </script>
 

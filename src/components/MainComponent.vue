@@ -48,6 +48,23 @@ export default {
     display: flex;
     flex-direction: column;
     row-gap: 25px;
+    border: 1px solid #9e9eed;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #fce6e6;
+  }
+
+  .form__button {
+    background-color: #9e9eed;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    color: #fce6e6;
+    font-size: 16px;
+  }
+
+  .form__heading {
+    text-align: center;
   }
 
   .select {
@@ -94,6 +111,10 @@ export default {
       row-gap: 0;
       column-gap: 100px;
       font-size: 24px;
+    }
+
+    .form__heading {
+      font-size: 26px;
     }
   }
 </style>
