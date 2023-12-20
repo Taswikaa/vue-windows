@@ -1,6 +1,25 @@
 <template>
   <div class="app">
-    <MainComponent />
+    <MainComponent 
+      :settings="{
+        dataObject: {
+          isActive: true,
+          isManager: true,
+          isProductName: true,
+          isJiraLink: true,
+          isDomain: true
+        },
+        creatingObject: {
+          isActive: true,
+          isUser: true,
+          isLead: true,
+          isType: true,
+          isBusiness: true,
+          isPercent: true,
+          isJob: true,
+        }
+      }"
+    />
   </div>
 </template>
 

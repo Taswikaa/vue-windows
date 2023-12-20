@@ -1,7 +1,7 @@
 <template>
-  <form class="form" @submit.prevent="onSubmit">
+  <form class="form" @submit.prevent="onSubmit" v-if="isActive">
     <h2 class="form__heading">Создать сотрудника</h2>
-    <div class="select-wrapper" v-if="usersList.length">
+    <div class="select-wrapper" v-if="settings.isUser && usersList.length">
       <select class="select" v-model="data.user">
         <option selected disabled>
           Сотрудник
@@ -15,7 +15,7 @@
         </option>
       </select>
     </div>
-    <div class="select-wrapper" v-if="leadsList.length">
+    <div class="select-wrapper" v-if="settings.isLead && leadsList.length">
       <select class="select" v-model="data.lead">
         <option selected disabled>
           Руководитель сотрудника
@@ -29,7 +29,7 @@
         </option>
       </select>
     </div>
-    <div class="select-wrapper" v-if="typesList.length">
+    <div class="select-wrapper" v-if="settings.isType && typesList.length">
       <select class="select" v-model="data.type">
         <option selected disabled>
           Тип ставки
@@ -43,7 +43,7 @@
         </option>
       </select>
     </div>
-    <div class="select-wrapper" v-if="businesesList.length">
+    <div class="select-wrapper" v-if="settings.isBusiness && businesesList.length">
       <select class="select" v-model="data.business">
         <option selected disabled>
           Бизнес-единица
@@ -61,13 +61,22 @@
       class="text-input"
       type="number"
       placeholder="Процент капитализации"
+      max="100"
+      min="0"
+      v-model.trim="data.percent"
+      v-if="settings.isPercent"
     >
     <input
       class="text-input"
       type="text"
       placeholder="Должность"
+      v-model.trim="data.job"
+      v-if="settings.isJob"
     >
-    <button class="form__button">Создать</button>
+    <div class="form__buttons">
+      <button class="form__button form__button_type_cancel" type="button" @click="onClose">Отмена</button>
+      <button class="form__button">Создать</button>
+    </div>
   </form>
 </template>
 
@@ -76,6 +85,7 @@ import api from '../utils/api.js';
 
 export default {
   name: 'CreateForm',
+  props: ['settings'],
   data() {
     return {
       data: {
@@ -84,8 +94,9 @@ export default {
         type: 'Тип ставки',
         business: 'Бизнес-единица',
         percent: 0,
-        job: 'Должность'
+        job: ''
       },
+      isActive: this.settings.isActive,
       usersList: [
 
       ],
@@ -102,9 +113,35 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.data);
-      // Запрос на второй эндпоинт
-      // api.sendSecondApi(this.data);
+      if (this.isActive) {
+        const sendingData = {
+
+        };
+        if (this.settings.isUser) {
+          sendingData['user'] = this.data.user;
+        }
+        if (this.settings.isLead) {
+          sendingData['lead'] = this.data.lead;
+        }
+        if (this.settings.isType) {
+          sendingData['type'] = this.data.type;
+        }
+        if (this.settings.isBusiness) {
+          sendingData['business'] = this.data.business;
+        }
+        if (this.settings.isPercent) {
+          sendingData['percent'] = this.data.percent;
+        }
+        if (this.settings.isJob) {
+          sendingData['job'] = this.data.job;
+        }
+        console.log(sendingData);
+        // Запрос на второй эндпоинт
+        // api.sendSecondApi(this.data);
+      }
+    },
+    onClose() {
+      this.isActive = false;
     }
   },
   mounted() {

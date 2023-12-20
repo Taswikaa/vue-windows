@@ -1,7 +1,7 @@
 <template>
   <div class="widget">
-    <DataForm />
-    <CreateForm />
+    <DataForm :settings="settings.dataObject" />
+    <CreateForm :settings="settings.creatingObject" />
   </div>
 </template>
 
@@ -14,7 +14,8 @@ export default {
   components: {
     DataForm,
     CreateForm
-  }
+  },
+  props: ['settings']
 }
 </script>
 
@@ -61,6 +62,18 @@ export default {
     padding: 10px;
     color: #fce6e6;
     font-size: 16px;
+    cursor: pointer;
+  }
+
+  .form__button_type_cancel {
+   background-color: rgb(202, 112, 112); 
+  }
+
+  .form__buttons {
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+    margin-top: 10px;
   }
 
   .form__heading {

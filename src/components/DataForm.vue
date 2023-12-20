@@ -1,7 +1,7 @@
 <template>
-  <form class="form" @submit.prevent="onSubmit">
+  <form class="form" @submit.prevent="onSubmit" v-if="isActive">
     <h2 class="form__heading">Создание</h2>
-    <div class="select-wrapper" v-if="managersList.length">
+    <div class="select-wrapper" v-if="settings.isManager &&managersList.length">
       <select class="select" v-model="data.user">
         <option selected disabled>
           Выберете менеджера
@@ -19,15 +19,15 @@
       class="text-input"
       type="text"
       placeholder="Название продукта"
-      v-model.trim="data.name"
+      v-model.trim="data.name" v-if="settings.isProductName"
     >
     <input
       class="text-input"
       type="text"
       placeholder="Ссылка в Jira"
-      v-model.trim="data.link"
+      v-model.trim="data.link" v-if="settings.isJiraLink"
     >
-    <div class="select-wrapper" v-if="domainsList.length">
+    <div class="select-wrapper" v-if="settings.isDomain && domainsList.length">
       <select class="select" v-model="data.domain">
         <option selected disabled>
           Укажите домен
@@ -41,7 +41,10 @@
         </option>
       </select>
     </div>
-    <button class="form__button">Создать</button>
+    <div class="form__buttons">
+      <button class="form__button form__button_type_cancel" type="button" @click="onClose">Отмена</button>
+      <button class="form__button">Создать</button>
+    </div>
   </form>
 </template>
 
@@ -52,6 +55,7 @@ export default {
   name: 'DataForm',
   components: {
   },
+  props: ['settings'],
   data() {
     return {
       data: {
@@ -60,6 +64,7 @@ export default {
         link: '',
         domain: 'Укажите домен'
       },
+      isActive: this.settings.isActive,
       managersList: [
 
       ],
@@ -70,9 +75,29 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.data);
-      // Запрос на первый эндпоинт
-      // api.sendToFirstApi(this.data);
+      if (this.isActive) {
+        const sendingData = {
+
+        };
+        if (this.settings.isManager) {
+          sendingData['manager'] = this.data.user;
+        }
+        if (this.settings.isProductName) {
+          sendingData['productName'] = this.data.name;
+        }
+        if (this.settings.isJiraLink) {
+          sendingData['jiraLink'] = this.data.link;
+        }
+        if (this.settings.isDomain) {
+          sendingData['domain'] = this.data.domain;
+        }
+        console.log(sendingData);
+        // Запрос на первый эндпоинт
+        // api.sendToFirstApi(this.data);
+      }
+    },
+    onClose() {
+      this.isActive = false;
     }
   },
   mounted() {
